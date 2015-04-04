@@ -1,5 +1,26 @@
 #include <cstdio>
+#include <cstdlib>
+#include <ctime>
 #include "Sudoku.h"
+
+int Sudoku::oringq[MAX]={
+    7,2,0,0,0,3,0,0,0,-1,-1,-1,
+    1,4,5,0,0,0,8,0,0,-1,-1,-1,
+    0,8,0,0,0,0,2,5,0,-1,-1,-1,
+    0,0,0,0,4,0,-1,-1,-1,9,0,0,
+    0,0,0,9,2,1,-1,-1,-1,5,0,0,
+    3,0,0,0,6,0,-1,-1,-1,0,8,0,
+    0,9,0,-1,-1,-1,0,1,0,0,0,7,
+    0,0,2,-1,-1,-1,5,4,3,0,0,0,
+    0,0,0,-1,-1,-1,0,2,0,0,0,0,
+    -1,-1,-1,0,7,0,0,0,0,0,6,0,
+    -1,-1,-1,0,0,6,0,0,0,8,3,4,
+    -1,-1,-1,0,0,0,4,0,0,0,5,9
+};
+
+Sudoku::Sudoku(){
+    srand(time(NULL));
+}
 
 void Sudoku::ReadIn(){
     int negative=0,num=0;
@@ -9,7 +30,7 @@ void Sudoku::ReadIn(){
         if(board[i]==-1) negative++;
         else if(board[i]>=1 && board[i]<=9) num++;
     }
-    if(negative!=36 || num<17) solvable=false;
+    if(negative!=36) solvable=false;
     else{
         for(int i=0;i<MAX;i++){
             if(isCorrect(i)==false){
@@ -71,6 +92,31 @@ void Sudoku::solve(int grid){
     }
 }
 
+void Sudoku::GiveQuestion(){
+    int list[10];
+    numchange(list);
+    for(int i=0;i<MAX;i++){
+        if(oringq[i]<=0) continue;
+        oringq[i]=list[oringq[i]];
+    }
+    for(int i=0;i<MAX;i++){
+        printf("%d ",oringq[i]);
+        if((i+1)%12==0) puts("");
+    }
+}
+
+void Sudoku::numchange(int *ch){
+    bool used[10]={false};
+    int n;
+    srand(time(NULL));
+    for(int i=1;i<=9;i++){
+        n=rand()%9+1;
+        while(used[n]==true) n=rand()%9+1;
+        used[n]=true;
+        ch[i]=n;
+    }
+}
+
 bool Sudoku::isCorrect(int place){
     int now=board[place];
     int row=place/12;
@@ -94,6 +140,8 @@ bool Sudoku::isCorrect(int place){
     for(int i=blockrow;i<blockrow+3;i++){
         for(int j=blockcol;j<blockcol+3;j++){
             if(board[i*12+j]==now && i!=row && j!=col){
+                return false;
+            }else if(board[i*12+j]==-1){
                 return false;
             }
         }
