@@ -11,5 +11,5 @@ private:
     bool unique,success,solvable;
     void solve(int grid);
     bool isCorrect(int place);
-    void numchange(int *ch);
+    void numchange();
 };

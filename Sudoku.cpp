@@ -4,18 +4,18 @@
 #include "Sudoku.h"
 
 int Sudoku::oringq[MAX]={
-    7,2,0,0,0,3,0,0,0,-1,-1,-1,
-    1,4,5,0,0,0,8,0,0,-1,-1,-1,
+    7,0,0,0,0,3,0,0,0,-1,-1,-1,
+    1,0,5,0,0,0,8,0,0,-1,-1,-1,
     0,8,0,0,0,0,2,5,0,-1,-1,-1,
     0,0,0,0,4,0,-1,-1,-1,9,0,0,
-    0,0,0,9,2,1,-1,-1,-1,5,0,0,
+    0,0,0,9,0,1,-1,-1,-1,5,0,0,
     3,0,0,0,6,0,-1,-1,-1,0,8,0,
-    0,9,0,-1,-1,-1,0,1,0,0,0,7,
+    0,9,0,-1,-1,-1,0,0,0,0,0,7,
     0,0,2,-1,-1,-1,5,4,3,0,0,0,
     0,0,0,-1,-1,-1,0,2,0,0,0,0,
     -1,-1,-1,0,7,0,0,0,0,0,6,0,
     -1,-1,-1,0,0,6,0,0,0,8,3,4,
-    -1,-1,-1,0,0,0,4,0,0,0,5,9
+    -1,-1,-1,0,0,0,4,0,0,0,0,9
 };
 
 Sudoku::Sudoku(){
@@ -93,27 +93,45 @@ void Sudoku::solve(int grid){
 }
 
 void Sudoku::GiveQuestion(){
-    int list[10];
-    numchange(list);
+    // numchange();
     for(int i=0;i<MAX;i++){
-        if(oringq[i]<=0) continue;
-        oringq[i]=list[oringq[i]];
+        board[i]=oringq[i];
     }
     for(int i=0;i<MAX;i++){
-        printf("%d ",oringq[i]);
+        if(board[i]<=0) continue;
+        int tmp=board[i];
+        board[i]=0;
+        success=false;unique=true;
+        solve(0);
+        if(success==false){
+            printf("Hole in %d:Not Success\n",i);
+            board[i]=tmp;
+        }else if(unique==false){
+            printf("Hole in %d:Not Unique\n",i);
+            board[i]=tmp;
+        }else{
+            printf("Hole in %d:Success\n",i);
+        }
+    }
+    for(int i=0;i<MAX;i++){
+        printf("%d ",board[i]);
         if((i+1)%12==0) puts("");
     }
 }
 
-void Sudoku::numchange(int *ch){
+void Sudoku::numchange(){
+    int list[10];
     bool used[10]={false};
     int n;
-    srand(time(NULL));
     for(int i=1;i<=9;i++){
         n=rand()%9+1;
         while(used[n]==true) n=rand()%9+1;
         used[n]=true;
-        ch[i]=n;
+        list[i]=n;
+    }
+    for(int i=0;i<MAX;i++){
+        if(oringq[i]<=0) continue;
+        oringq[i]=list[oringq[i]];
     }
 }
 
