@@ -28,7 +28,6 @@ void Sudoku::ReadIn(){
     for(int i=0;i<MAX;i++){
         scanf("%d",&board[i]);
         if(board[i]==-1) negative++;
-        else if(board[i]>=1 && board[i]<=9) num++;
     }
     if(negative!=36) solvable=false;
     else{
