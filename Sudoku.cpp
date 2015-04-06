@@ -23,7 +23,7 @@ Sudoku::Sudoku(){
 }
 
 void Sudoku::ReadIn(){
-    int negative=0,num=0;
+    int negative=0;
     solvable=true;success=false;unique=true;
     for(int i=0;i<MAX;i++){
         scanf("%d",&board[i]);
@@ -93,28 +93,28 @@ void Sudoku::solve(int grid){
 }
 
 void Sudoku::GiveQuestion(){
-    // numchange();
+    numchange();
+    // for(int i=0;i<MAX;i++){
+    //     board[i]=oringq[i];
+    // }
+    // for(int i=0;i<MAX;i++){
+    //     if(board[i]<=0) continue;
+    //     int tmp=board[i];
+    //     board[i]=0;
+    //     success=false;unique=true;
+    //     solve(0);
+    //     if(success==false){
+    //         printf("Hole in %d:Not Success\n",i);
+    //         board[i]=tmp;
+    //     }else if(unique==false){
+    //         printf("Hole in %d:Not Unique\n",i);
+    //         board[i]=tmp;
+    //     }else{
+    //         printf("Hole in %d:Success\n",i);
+    //     }
+    // }
     for(int i=0;i<MAX;i++){
-        board[i]=oringq[i];
-    }
-    for(int i=0;i<MAX;i++){
-        if(board[i]<=0) continue;
-        int tmp=board[i];
-        board[i]=0;
-        success=false;unique=true;
-        solve(0);
-        if(success==false){
-            printf("Hole in %d:Not Success\n",i);
-            board[i]=tmp;
-        }else if(unique==false){
-            printf("Hole in %d:Not Unique\n",i);
-            board[i]=tmp;
-        }else{
-            printf("Hole in %d:Success\n",i);
-        }
-    }
-    for(int i=0;i<MAX;i++){
-        printf("%d ",board[i]);
+        printf("%d ",oringq[i]);
         if((i+1)%12==0) puts("");
     }
 }
