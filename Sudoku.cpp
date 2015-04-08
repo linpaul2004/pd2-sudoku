@@ -66,6 +66,7 @@ void Sudoku::Solve(){
 }
 
 void Sudoku::solve(int grid){
+	if(unique==false) return;
     if(grid==MAX){
         if(success==false){
             success=true;
