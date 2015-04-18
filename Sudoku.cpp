@@ -18,6 +18,21 @@ int Sudoku::oringq[MAX]={
     -1,-1,-1,0,0,0,4,0,0,0,0,9
 };
 
+int Sudoku::specq[MAX]={
+    0,0,0,0,0,0,0,0,0,-1,-1,-1,
+    0,0,0,0,0,0,0,0,0,-1,-1,-1,
+    0,0,0,0,0,0,0,0,0,-1,-1,-1,
+    0,0,0,0,0,0,-1,-1,-1,0,0,0,
+    0,0,0,0,0,0,-1,-1,-1,0,0,0,
+    0,0,0,0,0,0,-1,-1,-1,0,0,0,
+    0,0,0,-1,-1,-1,0,0,0,0,0,0,
+    0,0,0,-1,-1,-1,0,0,0,0,0,0,
+    0,0,0,-1,-1,-1,0,0,0,0,0,0,
+    -1,-1,-1,0,0,0,0,0,0,0,0,0,
+    -1,-1,-1,0,0,0,0,0,0,0,0,0,
+    -1,-1,-1,0,0,0,0,0,0,0,0,0
+};
+
 Sudoku::Sudoku(){
     srand(time(NULL));
 }
@@ -66,7 +81,7 @@ void Sudoku::Solve(){
 }
 
 void Sudoku::solve(int grid){
-	if(unique==false) return;
+    if(unique==false) return;
     if(grid==MAX){
         if(success==false){
             success=true;
@@ -93,7 +108,16 @@ void Sudoku::solve(int grid){
 }
 
 void Sudoku::GiveQuestion(){
+    // if(rand()%2){
+    //     for(int i=0;i<MAX;i++){
+    //         printf("%d ",specq[i]);
+    //         if((i+1)%12==0) puts("");
+    //     }
+    //     return;
+    // }
     numchange();
+    rotate();
+    order();
     // for(int i=0;i<MAX;i++){
     //     board[i]=oringq[i];
     // }
@@ -113,9 +137,42 @@ void Sudoku::GiveQuestion(){
     //         printf("Hole in %d:Success\n",i);
     //     }
     // }
+    // for(int i=0;i<MAX;i++){
+    //     printf("%d ",oringq[i]);
+    //     if((i+1)%12==0) puts("");
+    // }
+}
+
+void Sudoku::order(){
+    int list[4];
+    bool used[4]={false};
+    for(int i=0;i<4;i++){
+        int n=rand()%4;
+        while(used[n]==true) n=rand()%4;
+        used[n]=true;
+        list[i]=n;
+    }
+    for(int i=0;i<4;i++){
+        for(int j=0;j<36;j++){
+            printf("%d ",oringq[list[i]*36+j]);
+            if((j+1)%12==0) puts("");
+        }
+    }
+}
+
+void Sudoku::rotate(){
+    int times=rand()%4;
+    int temp[MAX];
+    if(times==0) return;
     for(int i=0;i<MAX;i++){
-        printf("%d ",oringq[i]);
-        if((i+1)%12==0) puts("");
+        temp[i]=oringq[i];
+    }
+    while(times--){
+        for(int i=0;i<12;i++){
+            for(int j=0;j<12;j++){
+                oringq[j*12+11-i]=temp[i*12+j];
+            }
+        }
     }
 }
 
